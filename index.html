@@ -212,6 +212,46 @@
     <button id="startButton" type="button">Open operator console</button>
   </section>
 
+  <section id="codeGate" class="panel hidden">
+    <h2>Scavenger-hunt authorization</h2>
+
+    <p>
+      Six authorization letters are hidden throughout the Robotics Building.
+      Visit all six scavenger-hunt locations, collect one letter from each,
+      and unscramble them to form the six-letter code word.
+    </p>
+
+    <p>
+      <strong>Team:</strong>
+      <span id="codeTeamDisplay"></span>
+    </p>
+
+    <label for="codeWord">Enter the six-letter code word</label>
+    <input
+      id="codeWord"
+      type="text"
+      maxlength="6"
+      autocomplete="off"
+      autocapitalize="characters"
+      spellcheck="false"
+      aria-describedby="codeWordHelp"
+    >
+
+    <p id="codeWordHelp">
+      The letters may have been collected in a different order.
+    </p>
+
+    <button id="codeButton" type="button">
+      Submit code word
+    </button>
+
+    <div
+      id="codeResult"
+      role="status"
+      aria-live="polite"
+    ></div>
+  </section>
+
   <div id="console" class="hidden">
     <section class="panel instructions">
       <h2>Operator instructions</h2>
@@ -370,8 +410,11 @@
 
   const directionNames = ["North", "East", "South", "West"];
 
+  const scavengerCode = "SPARKS";
+
   let correctAnswer = "";
   let currentTeam = "";
+  let pendingTeam = "";
 
   function makePuzzle(teamNumber) {
     // Multiplication spreads adjacent team numbers across different seeds.
@@ -576,6 +619,7 @@
     });
 
     document.getElementById("teamSetup").classList.add("hidden");
+    document.getElementById("codeGate").classList.add("hidden");
     document.getElementById("console").classList.remove("hidden");
     document.getElementById("answer").focus();
   }
@@ -591,7 +635,60 @@
     }
 
     input.setCustomValidity("");
-    displayPuzzle(teamNumber);
+
+    // Save the team number while the team completes the scavenger hunt.
+    pendingTeam = teamNumber;
+
+    document.getElementById("codeTeamDisplay").textContent = teamNumber;
+    document.getElementById("teamSetup").classList.add("hidden");
+    document.getElementById("codeGate").classList.remove("hidden");
+    document.getElementById("codeWord").focus();
+  });
+
+  function submitScavengerCode() {
+    const codeInput = document.getElementById("codeWord");
+    const result = document.getElementById("codeResult");
+
+    // Ignore capitalization, spaces, and punctuation.
+    const enteredCode = codeInput.value
+      .replace(/[^a-zA-Z]/g, "")
+      .toUpperCase();
+
+    if (enteredCode.length !== 6) {
+      result.className = "message error";
+      result.textContent =
+        "The authorization code must contain exactly six letters.";
+      codeInput.focus();
+      return;
+    }
+
+    if (enteredCode !== scavengerCode) {
+      result.className = "message error";
+      result.textContent =
+        "Authorization denied. Check your six letters, unscramble them, and try again.";
+
+      codeInput.select();
+      return;
+    }
+
+    result.className = "message success";
+    result.textContent = "Authorization accepted. Opening operator console…";
+
+    // Briefly show the success message before opening the puzzle.
+    window.setTimeout(() => {
+      displayPuzzle(pendingTeam);
+    }, 700);
+  }
+
+  document.getElementById("codeButton").addEventListener(
+    "click",
+    submitScavengerCode
+  );
+
+  document.getElementById("codeWord").addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      submitScavengerCode();
+    }
   });
 
   document.getElementById("submitButton").addEventListener("click", () => {
