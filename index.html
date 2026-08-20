@@ -413,10 +413,16 @@
 
     if (finalSerialDigit % 2 === 0) {
       if (blueIndexes.length >= 2) {
+        // Two or more blue wires: select the last blue wire.
         selectedWireIndex = blueIndexes[blueIndexes.length - 1];
       } else if (blueIndexes.length === 1 && redIndexes.length >= 1) {
+        // Exactly one blue and at least one red: select the first red.
         selectedWireIndex = redIndexes[0];
+      } else if (blueIndexes.length === 1) {
+        // Exactly one blue and no red: select the blue wire.
+        selectedWireIndex = blueIndexes[0];
       } else {
+        // No blue wires: select the second wire.
         selectedWireIndex = 1;
       }
     } else {
