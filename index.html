@@ -217,13 +217,14 @@
 
     <p>
       Stations throughout the Robotics Building are labeled
-      <strong>Clue 1</strong> through <strong>Clue 6</strong>.
+      <strong>Clue 1</strong> through <strong>Clue 5</strong>.
       Your team must visit exactly one station of each clue type. You do not
-      need to visit every station. To get the station's clue, you must listen to their presentation and ask at least one question.
+      need to visit every station.
     </p>
 
     <p>
-      After collecting each clue, determine the six-letter authorization
+       To get the station's clue, you must listen to their presentation and ask at least one question.
+       After collecting each clue, determine the five-letter authorization
       code by rearranging each clue, then enter it below.
     </p>
 
@@ -232,7 +233,7 @@
       <span id="codeTeamDisplay"></span>
     </p>
 
-    <label for="codeWord">Enter the six-letter authorization code</label>
+    <label for="codeWord">Enter the five-letter authorization code</label>
 
     <input
       id="codeWord"
@@ -244,7 +245,7 @@
     >
 
     <p id="codeWordHelp">
-      Enter the word formed by rearranging your six decoded letters.
+      Enter the word formed by rearranging your five decoded letters.
     </p>
 
     <button id="codeButton" type="button">
@@ -416,7 +417,7 @@
 
   const directionNames = ["North", "East", "South", "West"];
 
-  const scavengerCode = "SPARKS";
+  const scavengerCode = "SPARK";
 
   let correctAnswer = "";
   let currentTeam = "";
@@ -660,10 +661,10 @@
       .replace(/[^a-zA-Z]/g, "")
       .toUpperCase();
 
-    if (enteredCode.length !== 6) {
+    if (enteredCode.length !== 5) {
       result.className = "message error";
       result.textContent =
-        "The authorization code must contain exactly six letters.";
+        "The authorization code must contain exactly five letters.";
       codeInput.focus();
       return;
     }
@@ -671,7 +672,7 @@
     if (enteredCode !== scavengerCode) {
       result.className = "message error";
       result.textContent =
-        "Authorization denied. Check your six letters, unscramble them, and try again.";
+        "Authorization denied. Check your five letters, unscramble them, and try again.";
 
       codeInput.select();
       return;
