@@ -262,6 +262,7 @@
   <div id="console" class="hidden">
     <section class="panel instructions">
       <h2>Operator instructions</h2>
+      <strong>Come see Connor once you reach this page!</strong>
       <ul>
         <li>Only the Operator may look at this console.</li>
         <li>The Operator may not look at the physical manual cards.</li>
@@ -417,7 +418,8 @@
 
   const directionNames = ["North", "East", "South", "West"];
 
-  const scavengerCode = "SPARK";
+  const scavengerCode1 = "SPARK";
+  const scavengerCode2 = "PARKS"
 
   let correctAnswer = "";
   let currentTeam = "";
@@ -669,7 +671,7 @@
       return;
     }
 
-    if (enteredCode !== scavengerCode) {
+    if (enteredCode !== scavengerCode1 && enteredCode !== scavengerCode2) {
       result.className = "message error";
       result.textContent =
         "Authorization denied. Check your five letters, unscramble them, and try again.";
